@@ -26,6 +26,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  bool isClicked = false;
+  int selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,7 +60,20 @@ class _HomePageState extends State<HomePage> {
         child: Padding(
           padding: const EdgeInsets.all(15.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Text(
+                'All Destinations',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight(700),
+                  color: Colors.black,
+                ),
+              ),
+              Text(
+                'Explore top locations worldwide.',
+                style: TextStyle(fontSize: 15),
+              ),
               Expanded(
                 child: GridView.builder(
                   itemCount: data.length,
@@ -76,7 +91,11 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           Stack(
                             children: [
-                              Image.asset(elements['image'] as String,height: 130,fit: BoxFit.fitHeight,),
+                              Image.asset(
+                                elements['image'] as String,
+                                height: 130,
+                                fit: BoxFit.fitHeight,
+                              ),
                               if (elements['status'] != null)
                                 Positioned(
                                   bottom: 10,
@@ -104,10 +123,38 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                   ),
                                 ),
+                              Positioned(
+                                right: 10,
+                                top: 10,
+                                child: Container(
+                                  padding: EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Color.fromRGBO(255, 255, 255, 0.8),
+                                  ),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        isClicked = !isClicked;
+                                      });
+                                    },
+                                    child: isClicked
+                                        ? Icon(
+                                            Icons.favorite,
+                                            color: Colors.red,
+                                          )
+                                        : Icon(Icons.favorite_border),
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(left: 15, right: 15,top: 15),
+                            padding: const EdgeInsets.only(
+                              left: 15,
+                              right: 15,
+                              top: 15,
+                            ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -457,6 +504,86 @@ class _HomePageState extends State<HomePage> {
           ),*/
         ),
       ),
+      bottomNavigationBar: Container(
+        height: 70,
+        decoration: BoxDecoration(color: Color.fromRGBO(239, 237, 237, 1)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  selectedIndex = 0;
+                });
+              },
+              child: customBar(
+                icon: Icons.home,
+                title: 'Home',
+                index: 0,
+                selectedIndex: selectedIndex,
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  selectedIndex = 1;
+                });
+              },
+              child: customBar(
+                icon: Icons.explore_rounded,
+                title: 'Discover',
+                index: 1,
+                selectedIndex: selectedIndex,
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  selectedIndex = 2;
+                });
+              },
+              child: customBar(
+                icon: Icons.grid_view_outlined,
+                title: 'Categories',
+                index: 2,
+                selectedIndex: selectedIndex,
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  selectedIndex = 3;
+                });
+              },
+              child: customBar(
+                title: 'My Trips',
+                icon: Icons.card_travel_rounded,
+                index: 3,
+                selectedIndex: selectedIndex,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
+}
+
+Widget customBar({
+  required String title,
+  required IconData icon,
+  required int index,
+  required int selectedIndex,
+}) {
+  return Container(
+    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+    decoration: BoxDecoration(
+      color: selectedIndex == index ? Color.fromRGBO(145, 247, 142, 1) : null,
+      borderRadius: BorderRadius.circular(40),
+    ),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [Icon(icon), Text(title)],
+    ),
+  );
 }
