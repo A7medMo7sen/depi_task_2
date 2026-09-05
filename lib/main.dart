@@ -26,8 +26,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  bool isClicked = false;
+  List isClicked = [];
   int selectedIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -135,10 +136,15 @@ class _HomePageState extends State<HomePage> {
                                   child: GestureDetector(
                                     onTap: () {
                                       setState(() {
-                                        isClicked = !isClicked;
+                                        if(isClicked.contains(index)){
+                                          isClicked.remove(index);
+                                        }
+                                        else {
+                                          isClicked.add(index);
+                                        }
                                       });
                                     },
-                                    child: isClicked
+                                    child: isClicked.contains(index)
                                         ? Icon(
                                             Icons.favorite,
                                             color: Colors.red,
@@ -175,24 +181,21 @@ class _HomePageState extends State<HomePage> {
                                         borderRadius: BorderRadius.circular(8),
                                         color: Color.fromRGBO(245, 243, 243, 1),
                                       ),
-                                      child: SingleChildScrollView(
-                                        scrollDirection: Axis.horizontal,
-                                        child: Row(
-                                          children: [
-                                            Icon(
-                                              Icons.star_outlined,
-                                              color: Colors.orangeAccent,
+                                      child: Row(
+                                        children: [
+                                          Icon(
+                                            Icons.star_outlined,
+                                            color: Colors.orangeAccent,
+                                          ),
+                                          Text(
+                                            (elements['rate'] as double)
+                                                .toString(),
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight(700),
                                             ),
-                                            Text(
-                                              (elements['rate'] as double)
-                                                  .toString(),
-                                              style: TextStyle(
-                                                fontSize: 15,
-                                                fontWeight: FontWeight(700),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ],
